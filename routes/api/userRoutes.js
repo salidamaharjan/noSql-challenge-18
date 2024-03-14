@@ -28,4 +28,11 @@ router.post("/", async (req, res) => {
   res.json(user);
 });
 
+router.delete('/:id', async (req, res) => {
+    const userById = await User.findOneAndDelete({_id: req.params.id});
+    !userById ? res.status(404).json({
+        message: 'No user with that ID',
+      }) : res.json(`User with Id-> ${req.params.id} deleted`);
+})
+
 module.exports = router;
