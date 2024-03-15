@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const { Thought, User } = require("../../models");
-const { findOneAndUpdate } = require("../../models/User");
 
 //get all the thoughts
 router.get("/", async (req, res) => {
@@ -42,8 +41,22 @@ router.put("/:id", async (req, res) => {
 
 //delete thought
 router.delete("/:id", async (req, res) => {
-  const thoughtById = await Thought.findOneAndDelete({_id: req.params.id});
-  !thoughtById ? res.status(404).json("Thought not found!") : res.status(200).json('Thought deleted!');
+  const thoughtById = await Thought.findOneAndDelete({ _id: req.params.id });
+  !thoughtById
+    ? res.status(404).json("Thought not found!")
+    : res.status(200).json("Thought deleted!");
+});
+
+//create a reaction
+router.post("/:id/reactions", async (req, res) => {
+  const reactionByThoughtId = await Thought.findOneAndUpdate(
+    { _id: req.params.id },
+    { $addToSet: { reactions: req.body } },
+    { runValidators:true, new: true }
+  );
+  !reactionByThoughtId
+    ? res.status(404).json("ID not found")
+    : res.status(200).json("Reaction Created");
 });
 
 module.exports = router;
