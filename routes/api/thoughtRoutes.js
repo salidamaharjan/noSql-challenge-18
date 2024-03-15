@@ -33,9 +33,17 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const thoughtById = await Thought.findOneAndUpdate(
     { _id: req.params.id },
-    {$set: { thoughtText: req.body.thoughtText }}
+    { $set: { thoughtText: req.body.thoughtText } }
   );
-  !thoughtById ? res.status(404).json("ID not found") : res.status(200).json("Thought updated!");
+  !thoughtById
+    ? res.status(404).json("ID not found")
+    : res.status(200).json("Thought updated!");
+});
+
+//delete thought
+router.delete("/:id", async (req, res) => {
+  const thoughtById = await Thought.findOneAndDelete({_id: req.params.id});
+  !thoughtById ? res.status(404).json("Thought not found!") : res.status(200).json('Thought deleted!');
 });
 
 module.exports = router;
