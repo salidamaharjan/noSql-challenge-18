@@ -42,6 +42,11 @@ router.put("/:id", async (req, res) => {
 //delete thought
 router.delete("/:id", async (req, res) => {
   const thoughtById = await Thought.findOneAndDelete({ _id: req.params.id });
+  await User.findOneAndUpdate(
+    {_id: req.body.userId},
+    { $pull: { thoughts: thoughtById._id} },
+    { runValidators: true, new: true }
+    );
   !thoughtById
     ? res.status(404).json("Thought not found!")
     : res.status(200).json("Thought deleted!");
