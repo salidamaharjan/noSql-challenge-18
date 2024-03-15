@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { resolve } = require("path");
 const { Thought, User } = require("../../models");
 
 //get all the thoughts
@@ -11,7 +12,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const thoughtById = await Thought.findOne({ _id: req.params.id });
   !thoughtById
-    ? req.status(404).json({ message: "No thought found with that ID." })
+    ? resolve.status(404).json({ message: "No thought found with that ID." })
     : res.json(thoughtById);
 });
 
@@ -66,12 +67,12 @@ router.post("/:id/reactions", async (req, res) => {
 
 //delete a reaction
 router.delete("/:id/reactions/:reactionId", async (req, res) => {
-  const reactionById = await Thought.findOneAndDelete(
+  const reactionById = await Thought.findOneAndUpdate(
     { _id: req.params.id },
     { $pull: { reactions: { reactionId: req.params.reactionId } } },
     { runValidators: true, new: true }
   );
-  !reactionById ? res.status(404).json({message: 'Reaction ID not found'}): res.status(200).json({message: "REaction Deleted"});
+  !reactionById ? res.status(404).json({message: 'Reaction ID not found'}): res.status(200).json({message: "Reaction Deleted"});
 });
 
 module.exports = router;
