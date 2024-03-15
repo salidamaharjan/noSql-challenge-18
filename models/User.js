@@ -44,12 +44,6 @@ userSchema.virtual("friendCount").get(function () {
   return this.friends.length;
 });
 
-userSchema.virtual("thought", {
-  ref: 'Thought',
-  localField: '_id',
-  foreignField: 'owner'
-})
-
 const User = model("user", userSchema);
 
 module.exports = User;
