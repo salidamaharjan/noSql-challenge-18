@@ -52,11 +52,21 @@ router.post("/:id/reactions", async (req, res) => {
   const reactionByThoughtId = await Thought.findOneAndUpdate(
     { _id: req.params.id },
     { $addToSet: { reactions: req.body } },
-    { runValidators:true, new: true }
+    { runValidators: true, new: true }
   );
   !reactionByThoughtId
     ? res.status(404).json("ID not found")
     : res.status(200).json("Reaction Created");
+});
+
+//delete a reaction
+router.delete("/:id/reactions/:reactionId", async (req, res) => {
+  const reactionById = await Thought.findOneAndDelete(
+    { _id: req.params.id },
+    { $pull: { reactions: { reactionId: req.params.reactionId } } },
+    { runValidators: true, new: true }
+  );
+  !reactionById ? res.status(404).json({message: 'Reaction ID not found'}): res.status(200).json({message: "REaction Deleted"});
 });
 
 module.exports = router;
