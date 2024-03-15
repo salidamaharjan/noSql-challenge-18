@@ -22,9 +22,11 @@ router.put("/:id", async (req, res) => {
     { $set: req.body },
     { new: true }
   );
-  !userById ? res.status(404).json({
-    message: 'No user with that ID',
-  }): res.json('User Updated');
+  !userById
+    ? res.status(404).json({
+        message: "No user with that ID",
+      })
+    : res.json("User Updated");
 });
 
 //create a new user
@@ -34,22 +36,37 @@ router.post("/", async (req, res) => {
 });
 
 //delete a user by id
-router.delete('/:id', async (req, res) => {    
-    const userById = await User.findOneAndDelete({_id: req.params.id});
-    await Thought.deleteMany({_id: {$in: userById.thoughts}});
-    !userById ? res.status(404).json({
-        message: 'No user with that ID',
-      }) : res.json(`User with Id-> ${req.params.id} deleted`);
+router.delete("/:id", async (req, res) => {
+  const userById = await User.findOneAndDelete({ _id: req.params.id });
+  await Thought.deleteMany({ _id: { $in: userById.thoughts } });
+  !userById
+    ? res.status(404).json({
+        message: "No user with that ID",
+      })
+    : res.json(`User with Id-> ${req.params.id} deleted`);
 });
 
 //add a new friend
-router.post('/:id/friends/:friendId', async(req, res) => {
+router.post("/:id/friends/:friendId", async (req, res) => {
   const userById = await User.findOneAndUpdate(
-    {_id: req.params.id},
-    {$addToSet: {friends: req.params.friendId}},
-    {runValidators: true, new: true}
-    );
-  !userById ? res.status(404).json('No user found') : res.status(200).json("Friend added");
+    { _id: req.params.id },
+    { $addToSet: { friends: req.params.friendId } },
+    { runValidators: true, new: true }
+  );
+  !userById
+    ? res.status(404).json("No user found")
+    : res.status(200).json("Friend added");
+});
+
+//delete a friend
+router.delete("/:id/friends/:friendId", async (req, res) => {
+  const userById = await User.findOneAndUpdate(
+    { _id: req.params.id },
+    { $pull: { friends: req.params.friendId } }
+  );
+  !userById
+    ? res.status(404).json("User not found")
+    : res.status(200).json("Friend deleted");
 });
 
 module.exports = router;
