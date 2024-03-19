@@ -2,13 +2,18 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[Walk Through Video]()
+[Walk Through Video](https://www.youtube.com/watch?v=bxVEsT2APJU)
 
 [GitHub Repo Link](https://github.com/salidamaharjan/noSql-challenge-18)
 
 ## Description
 
 This project is completed using Mongo DB and Mongoose models to sync the db.
+
+## Walk Through Video
+
+Play the video to know about the project.
+[![Walk Through Video](./asset/images/thumbnail.png)](https://www.youtube.com/watch?v=bxVEsT2APJU)
 
 ## Table of Content
 1. [Installation](#installation)
